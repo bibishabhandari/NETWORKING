@@ -1,0 +1,27 @@
+DNS stands for “Domain Name System”. It's a system that lets you connect to websites by matching human-readable domain names (like wpbeginner.com) with the unique ID of the server where a website is stored. Think of the DNS system as the internet's phonebook.
+
+Here are some details of DNS records:
+
+--> Host (A and AAAA): Contains IP Addresses for IPv4 and IPv6 hosts
+--> Alias (CNAME): Works just like a shortcut for files except for DNS records.
+--> Mail Exchange (MX): Holds the address of mail servers for that domain.
+--> Service Record (SRV): Holds the address of services on the network. E.g. Active Directory DC's.
+--> Start of Authority (SOA): Contains information and configuration for a zone file.
+--> Name Server (NS): Contain the address of other DNS servers for that zone.
+--> Pointer (PTR): Reverse look up record allowing a hostname for an IP Address to be look up.
+
+--> Host (A and AAAA)
+  The host record is used to store the address of a hostname. "A" is used for IPv4 and AAAA (Quad A) for IPv6. These can be created manually in DNS or if dynamic DNS is enabled   and the client can register its hostname and thus its IP Address with the DNS server.
+
+--> Alias (CName)
+    A canonical name or CName record provides an alias service in DNS. A CName effectively points to another A or Quad A record. When the client requests the hostname that is       contained in the CName, they are given the IP Address that is contained in the A record or Quad A record. The advantage of a CName is that it can provide a simple name to       the user rather than a more complex server name. For example, instead of having to remember FS27 for the local file server, a CName of FS could be used to point towards the     server FS27. CName's can also be used to transparently redirect network traffic. For example, if you changed you mind and wanted to redirect the user to FS28 you would only     need to change the CName record to point to FS28 rather than FS27. It should be remembered that the old record may exist in the client cache and may take some time to           expire.
+
+--> Mail Exchange (MX)
+    The mail exchange record contains a mail server that is able to process mail for that domain name. When a mail server wants to deliver mail, it will perform a DNS lookup         asking the DNS server for an MX record for that DNS Domain name. The mail server will then attempt to deliver mail to that server. The mail server does not need to have the     same DNS name as the mail that is being delivered, it simply needs to understand how to process mail for that DNS domain name.
+    The MX record also has priority value that can be configured. If two or more MX Exchange records exist for the same DNS Doman name, the MX record with the lowest priority       will be tried first. If this fails, the MX record with the next lowest value will be tried until the mail is delivered. Often large companies will have multiple mail severs     for incoming mail. In some cases, these additional mail servers may be located on different sides of the globe in case there is a long network outage.
+
+--> Service Record (SRV)
+    Service records allow clients on the network to find resources on the network. Active Directory creates a number of service records in DNS to allow clients to find resources     like Domain Controllers. This is why Active Directory cannot operate without DNS.  A single service record has a number of data fields associated with it. These include,         service, target, port and priority. Service records are normally created automatically by applications assuming that your DNS server allows dynamic updates.
+
+--> Start of Authority (SOA)
+    There is one start of authority record (SOA) for each zone. Even though the SOA is technically a DNS record, essentially modification of the SOA record is performed through     the properties of the DNS zone. Looking at the data in the SOA record, you can configure options for the zone like the primary name server for that zone (DNS servers that       hold the master records for the zone), the e-mail address of an administrator, serial number (Incremented each time a change is made in the DNS zone) and the refresh time       for the zone (How often a secondary zone should query a master for changes).
